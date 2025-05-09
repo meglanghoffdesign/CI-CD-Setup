@@ -6,7 +6,7 @@ on:
       - develop
 
 jobs:
-  cypress-run:
+  cypress-tests:
     runs-on: ubuntu-latest
 
     services:
@@ -21,7 +21,7 @@ jobs:
           --health-retries 5
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Setup Node.js
@@ -32,24 +32,19 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build server and client
+      - name: Build app
         run: npm run build
 
-      - name: Start the server
+      - name: Start app
         run: npm run start &
-        env:
-          PORT: 3001
-
-      - name: Wait for server to be ready
-        run: |
-          echo "Waiting for server on port 3001..."
-          until curl -s http://localhost:3001; do
-            sleep 2
-          done
+      
+      - name: Wait for app to be ready
+        uses: jakejarvis/wait-action@v0.1.0
+        with:
+          url: http://localhost:3001
+          timeout: 60
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          start: false
-        env:
-          CYPRESS_baseUrl: http://localhost:3001
+          wait-on: 'http://localhost:3001'
