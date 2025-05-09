@@ -33,7 +33,7 @@ jobs:
           url: http://localhost:3001  # Adjust URL if necessary
           timeout: 60  # Wait for 60 seconds
 
-      - name: Run Cypress Component Tests
-        run: npx cypress run --component  # Adjust this based on the exact Cypress component test configuration you need
-        env:
-          CYPRESS_baseUrl: http://localhost:3001
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          wait-on: 'http://localhost:3001'
