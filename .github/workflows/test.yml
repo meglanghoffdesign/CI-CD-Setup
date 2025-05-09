@@ -35,29 +35,21 @@ jobs:
       - name: Build server and client
         run: npm run build
 
-      - name: Set unique port and start the app
+      - name: Start the server
+        run: npm run start &
+        env:
+          PORT: 3001
+
+      - name: Wait for server to be ready
         run: |
-          PORT=$(shuf -i 3001-3999 -n 1)
-          echo "Using port $PORT"
-          echo "PORT=$PORT" >> $GITHUB_ENV
-          echo "CYPRESS_baseUrl=http://localhost:$PORT" >> $GITHUB_ENV
-
-          npm run start &  # Start in background
-
-          # Wait for server to start
-          while ! curl -s http://localhost:$PORT > /dev/null; do
-            echo "Waiting for server to start on port $PORT..."
+          echo "Waiting for server on port 3001..."
+          until curl -s http://localhost:3001; do
             sleep 2
           done
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          start: false  # App is already running
+          start: false
         env:
-          CYPRESS_baseUrl: ${{ env.CYPRESS_baseUrl }}
-
-      - name: Debug port
-        run: echo "Port is $PORT"
-        env:
-          PORT: ${{ env.PORT }}
+          CYPRESS_baseUrl: http://localhost:3001
