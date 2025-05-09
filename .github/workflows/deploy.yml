@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Deploy via Render Deploy Hook
         run: curl "$RENDER_DEPLOY_HOOK_URL"
         env:

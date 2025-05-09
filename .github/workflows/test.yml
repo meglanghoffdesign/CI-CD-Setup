@@ -25,8 +25,14 @@ jobs:
         run: npm run build
 
       - name: Start the app
-        run: npm run start &
-        
+        run: |
+          npm run start &
+          # Wait for the server to be ready
+          while ! curl -s http://localhost:3001; do
+            echo "Waiting for server to start..."
+            sleep 2
+          done
+
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
