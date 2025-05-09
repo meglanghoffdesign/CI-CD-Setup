@@ -51,4 +51,9 @@ jobs:
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          start: npm start
+          start: false  # Don't start the app again!
+        env:
+          CYPRESS_baseUrl: http://localhost:${{ env.PORT }}
+        
+      - name: Debug port
+        run: echo "Port is $PORT"
