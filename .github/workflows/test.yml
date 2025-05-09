@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
@@ -21,5 +21,19 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Build app
+        run: npm run build
+
+      - name: Start app
+        run: npm run start &  # Start the app in the background
+
+      - name: Wait for app to be ready
+        uses: jakejarvis/wait-action@v0.1.0
+        with:
+          url: http://localhost:3001  # Adjust URL if necessary
+          timeout: 60  # Wait for 60 seconds
+
       - name: Run Cypress Component Tests
-        run: npx cypress run --component
+        run: npx cypress run --component  # Adjust this based on the exact Cypress component test configuration you need
+        env:
+          CYPRESS_baseUrl: http://localhost:3001
