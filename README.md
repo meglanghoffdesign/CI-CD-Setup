@@ -1,4 +1,4 @@
-# Tech Quiz with Cypress Testing 
+# Tech Quiz with GitHub Actions and Cypress Testing
 
 ## License Badge
 ![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)
