@@ -20,10 +20,10 @@ It demonstrates how to:
 
 ## Installation
 To get started, clone the repository to your local machine using the following command:
-git clone https://github.com/meglanghoffdesign/tech-quiz-cypress.git
+git clone https://github.com/meglanghoffdesign/CI-CD-Setup.git
 
 Next, navigate into the project directory:
-cd tech-quiz-cypress
+cd CI-CD-Setup
 
 Install dependencies:
 npm install
