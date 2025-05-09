@@ -63,6 +63,9 @@ This project follows a modern development and deployment flow:
 - Merges into main trigger a separate GitHub Action that:
      - Deploys the application to Render
 
+## Gist File
+You can access the CI/CD & Cypress Tutorial .md file here: https://gist.github.com/meglanghoffdesign/6f802195ef1219dec1187d4706b278cb#file-tech-quiz-ci-cd-tutorial-md
+
 This ensures all code is tested before being merged and deployed.
 
 ## Questions
