@@ -35,12 +35,14 @@ jobs:
       - name: Build server and client
         run: npm run build
 
-      - name: Start the app
+      - name: Set unique port and start the app
         run: |
-          npm run start &
+          export PORT=$(shuf -i 3001-3999 -n 1)  # Random port between 3001 and 3999
+          echo "Using port $PORT"
+          npm run start &  # Start server in the background
           # Wait for the server to be ready
-          while ! curl -s http://localhost:3001; do
-            echo "Waiting for server to start..."
+          while ! curl -s http://localhost:$PORT; do
+            echo "Waiting for server to start on port $PORT..."
             sleep 2
           done
 
