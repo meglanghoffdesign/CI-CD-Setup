@@ -40,6 +40,8 @@ jobs:
           export PORT=$(shuf -i 3001-3999 -n 1)  # Random port between 3001 and 3999
           echo "Using port $PORT"
           npm run start &  # Start server in the background
+          export CYPRESS_baseUrl="http://localhost:$PORT"
+          
           # Wait for the server to be ready
           while ! curl -s http://localhost:$PORT; do
             echo "Waiting for server to start on port $PORT..."
