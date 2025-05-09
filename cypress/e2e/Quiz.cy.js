@@ -7,19 +7,25 @@ describe('Quiz', () => {
     cy.contains('Start Quiz').should('be.visible');
   });
   
-  it('starts the quiz when the "Start Quiz" button is clicked', () => {
-    cy.intercept('GET', '/api/questions/random').as('getQuestion');
+it('answers all 10 questions and completes the quiz', () => {
+  cy.intercept('GET', '/api/questions/random').as('getQuestion');
+  
+  cy.visit('/');
+  cy.contains('Start Quiz').click();
+  cy.wait('@getQuestion', { timeout: 10000 });
+
+  // Answer 10 questions
+  for (let i = 0; i < 10; i++) {
+    cy.get('[data-cy="question"]', { timeout: 10000 }).should('be.visible');
+    cy.get(`[data-cy="answer-${i % 3}"]`).click();
     
-    // Visit the site and click the "Start Quiz" button
-    cy.visit('/');
-    cy.contains('Start Quiz').click();
-    
-    // Wait for the API request to complete
-    cy.wait('@getQuestion', { timeout: 10000 }); // Increase timeout to 10 seconds
-    
-    // Ensure the first question is visible after clicking the start button
-    cy.get('[data-cy="question"]', { timeout: 10000 }).should('be.visible'); // Increase timeout here as well
-  });
+    // Wait for the next question
+    cy.wait('@getQuestion', { timeout: 10000 });
+  }
+
+  cy.contains('Quiz Completed').should('be.visible');
+  cy.contains('Your score:').should('be.visible');
+});
 
   it('answers a question correctly and moves to the next', () => {
     cy.intercept('GET', '/api/questions/random').as('getQuestion');
